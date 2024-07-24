@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f4f9, #e0e0eb);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #itemInput {
+            width: 300px;
+            height: 30px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #e60000, #ff1a1a);
+        }
+
+        #checklist {
+            --background: #fff;
+            --text: #414856;
+            --check: #4f29f0;
+            --disabled: #c3c8de;
+            --border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff, #e0e0eb);
+            width: 500px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(65, 72, 86, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #checklist label {
+            color: var(--text);
+            position: relative;
+            cursor: pointer;
+            display: grid;
+            align-items: center;
+            transition: color 0.3s ease;
+            margin-right: 20px;
+        }
+
+        #checklist label::before, #checklist label::after {
+            content: "";
+            position: absolute;
+        }
+
+        #checklist label::before {
+            height: 2px;
+            width: 8px;
+            left: -27px;
+            background: var(--check);
+            border-radius: 2px;
+            transition: background 0.3s ease;
+        }
+
+        #checklist label:after {
+            height: 4px;
+            width: 4px;
+            top: 8px;
+            left: -25px;
+            border-radius: 50%;
+        }
+
+        #checklist input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            position: relative;
+            height: 15px;
+            width: 15px;
+            outline: none;
+            border: 0;
+            margin: 0 15px 0 0;
+            cursor: pointer;
+            background: var(--background);
+            display: grid;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        #checklist input[type="checkbox"]::before, #checklist input[type="checkbox"]::after {
+            content: "";
+            position: absolute;
+            height: 2px;
+            top: auto;
+            background: var(--check);
+            border-radius: 2px;
+        }
+
+        #checklist input[type="checkbox"]::before {
+            width: 0px;
+            right: 60%;
+            transform-origin: right bottom;
+        }
+
+        #checklist input[type="checkbox"]::after {
+            width: 0px;
+            left: 40%;
+            transform-origin: left bottom;
+        }
+
+        #checklist input[type="checkbox"]:checked::before {
+            animation: check-01 0.4s ease forwards;
+        }
+
+        #checklist input[type="checkbox"]:checked::after {
+            animation: check-02 0.4s ease forwards;
+        }
+
+        #checklist input[type="checkbox"]:checked + label {
+            color: var(--disabled);
+            animation: move 0.3s ease 0.1s forwards;
+        }
+
+        #checklist input[type="checkbox"]:checked + label::before {
+            background: var(--disabled);
+            animation: slice 0.4s ease forwards;
+        }
+
+        #checklist input[type="checkbox"]:checked + label::after {
+            animation: firework 0.5s ease forwards 0.1s;
+        }
+
+        @keyframes move {
+            50% {
+                padding-left: 8px;
+                padding-right: 0px;
+            }
+
+            100% {
+                padding-right: 4px;
+            }
+        }
+
+        @keyframes slice {
+            60% {
+                width: 100%;
+                left: 4px;
+            }
+
+            100% {
+                width: 100%;
+                left: -2px;
+                padding-left: 0;
+            }
+        }
+
+        @keyframes check-01 {
+            0% {
+                width: 4px;
+                top: auto;
+                transform: rotate(0);
+            }
+
+            50% {
+                width: 0px;
+                top: auto;
+                transform: rotate(0);
+            }
+
+            51% {
+                width: 0px;
+                top: 8px;
+                transform: rotate(45deg);
+            }
+
+            100% {
+                width: 5px;
+                top: 8px;
+                transform: rotate(45deg);
+            }
+        }
+
+        @keyframes check-02 {
+            0% {
+                width: 4px;
+                top: auto;
+                transform: rotate(0);
+            }
+
+            50% {
+                width: 0px;
+                top: auto;
+                transform: rotate(0);
+            }
+
+            51% {
+                width: 0px;
+                top: 8px;
+                transform: rotate(-45deg);
+            }
+
+            100% {
+                width: 10px;
+                top: 8px;
+                transform: rotate(-45deg);
+            }
+        }
+
+        @keyframes firework {
+            0% {
+                opacity: 1;
+                box-shadow: 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0, 0 0 0 -2px #4f29f0;
+            }
+
+            30% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                box-shadow: 0 -15px 0 0px #4f29f0, 14px -8px 0 0px #4f29f0, 14px 8px 0 0px #4f29f0, 0 15px 0 0px #4f29f0, -14px 8px 0 0px #4f29f0, -14px -8px 0 0px #4f29f0;
+            }
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(45deg, #e60000, #ff1a1a);
+        }
+
+        .item-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>THE TO DO LIST</h1>
+    <input type="text" id="itemInput" placeholder="Enter an item">
+    <button onclick="addItem()">Add Item</button>
+    <div id="checklist"></div>
+
+    <footer>&copy; 2024 Payal Mahapatro</footer>
+
+    <script>
+        function createCheckbox(id, labelText) {
+            var checklist = document.getElementById('checklist');
+
+            var itemWrapper = document.createElement('div');
+            itemWrapper.classList.add('item-wrapper');
+
+            var input = document.createElement('input');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('id', id);
+            input.setAttribute('value', id);
+            input.setAttribute('name', 'r');
+
+            var label = document.createElement('label');
+            label.setAttribute('for', id);
+            label.innerText = labelText;
+
+            var deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.classList.add('delete-btn');
+            deleteButton.onclick = function() {
+                checklist.removeChild(itemWrapper);
+            };
+
+            itemWrapper.appendChild(input);
+            itemWrapper.appendChild(label);
+            itemWrapper.appendChild(deleteButton);
+
+            checklist.appendChild(itemWrapper);
+        }
+
+        function addItem() {
+            var itemInput = document.getElementById('itemInput');
+            var item = itemInput.value.trim();
+            if (item !== '') {
+                createCheckbox('checkbox' + (document.querySelectorAll('#checklist input[type="checkbox"]').length + 1), item);
+                itemInput.value = '';
+            } else {
+                alert('Please enter a valid item!');
+            }
+        }
+    </script>
+</body>
+</html>
